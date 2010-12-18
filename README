@@ -1,0 +1,28 @@
+autocable
+written by murray foster
+mrafoster@gmail.com
+
+Eats your text files and routes Jack connections for you.
+
+COMPILE:
+From within autocable's directory, run the following command:
+gcc main.c -o autocable `pkg-config --cflags --libs jack`
+
+OPERATION:
+
+Start jackd
+
+./autocable yourdirectory/textfile.ac
+
+autocable will read any text file, however it
+must be formatted properly.
+
+In your file, use full port names and return each connection.
+ie.     	
+	system:capture_1 system:playback_1
+    	system:capture_2 system:playback_2
+
+An example file 'session.ac' is included with this program.
+
+TO-DO:
+Contact me to demand features
