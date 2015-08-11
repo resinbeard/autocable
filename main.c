@@ -69,8 +69,8 @@ int main (int argc, char *argv[])
 	jack_port_t *dst_port = 0;
 	int no_spec = 0;
 
-	if (argc < 2)
-        no_spec = 1;
+	if ( (argc < 1) || (argc > 2) ) 
+	  no_spec = 1;
 
 	/* try to become a client of the JACK server */
 
@@ -81,42 +81,44 @@ int main (int argc, char *argv[])
 
 	/* open user-defined directory */
 
-	if ( (file_directory = argv[1]) == 0 && (no_spec == 1))
-	{
-		show_usage(my_name);
-		return 1;
-	}
+	if (argc == 2)
+	  if ( (file_directory = argv[1]) == 0 && (no_spec == 1))
+	    {
+	      show_usage(my_name);
+	      return 1;
+	    }
+	  else
+	    {
+	      /* let's try to open the file... */    
+	      input_file = fopen(file_directory, "r");
+	      
+	      if(input_file != NULL)
+		printf("\nautocable has eaten your file and is getting to work!\n\n");
+	      else
+		{
+		  fprintf (stderr, "ERROR %s not a valid directory\n", argv[1]);
+		  show_usage(my_name);
+		  return 1;
+		}
+	    }
 	else
-	{
-        /* let's try to open the file... */
-
-        input_file = fopen(file_directory, "r");
-
-        if(input_file != NULL)
-            printf("\nautocable has eaten your file and is getting to work!\n\n");
-        else
-        {
-        fprintf (stderr, "ERROR %s not a valid directory\n", argv[1]);
-		show_usage(my_name);
-		return 1;
-        }
-
-
+	  input_file = stdin;
         /* main function loop */
 
         while(fgets(string_buffer, MAX_LEN, input_file) != NULL)
         {
+	  if( strcmp(string_buffer,"\n") ) { 
             /* break up the line read from the file */
             src_name = strtok(string_buffer, " ");
             dst_name = strtok(NULL, "\n");
-
-            /* make port connection */
+            printf("attempting to connect %s and %s..\n", src_name, dst_name);
+	    /* make port connection */
             jack_connect(client, src_name, dst_name);
 
-            printf("%s and %s connected.\n", src_name, dst_name);
+	  }
         }
         printf("\nfinished!\n\n");
-    }
+    
 
     /* close shit down! */
 	jack_client_close (client);

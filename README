@@ -4,20 +4,25 @@ mrafoster@gmail.com
 
 Eats your text files and routes Jack connections for you.
 
+SYSTEM REQUIREMENTS:
+JACK development libraries
+
 COMPILE:
-From within autocable's directory, run the following command:
-gcc main.c -o autocable `pkg-config --cflags --libs jack`
+From within autocable's directory,
+$ make
 
 OPERATION:
-
 Start jackd
 
+echo "PIPED INPUT" | ./autocable
+or
 ./autocable yourdirectory/textfile.ac
 
-autocable will read any text file, however it
+autocable will read any text file or piped input, however it
 must be formatted properly.
 
 In your file, use full port names and return each connection.
+It does not matter if you return the last port connection.
 ie.     	
 	system:capture_1 system:playback_1
     	system:capture_2 system:playback_2
