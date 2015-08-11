@@ -14,9 +14,12 @@ $ make
 OPERATION:
 Start jackd
 
-echo "PIPED INPUT" | ./autocable
+$ echo "system:capture_1 system:playback_1
+> system:capture_2 system:playback_2" | ./autocable
+
 or
-./autocable yourdirectory/textfile.ac
+
+$ ./autocable yourdirectory/textfile.ac
 
 autocable will read any text file or piped input, however it
 must be formatted properly.
