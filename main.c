@@ -31,7 +31,7 @@
 #include <jack/jack.h>
 
 /* string buffer size */
-#define MAX_LEN 60
+#define MAX_LEN 300
 
 void
 show_version (char *my_name)
@@ -63,8 +63,9 @@ int main (int argc, char *argv[])
 
 	char *my_name = "autocable";
 
-    char *src_name = NULL;
-    char *dst_name = NULL;
+	char *action = NULL;
+	char *src_name = NULL;
+	char *dst_name = NULL;
 	jack_port_t *src_port = 0;
 	jack_port_t *dst_port = 0;
 	int no_spec = 0;
@@ -109,12 +110,19 @@ int main (int argc, char *argv[])
         {
 	  if( strcmp(string_buffer,"\n") ) { 
             /* break up the line read from the file */
-            src_name = strtok(string_buffer, " ");
+	    action = strtok(string_buffer, " ");
+            src_name = strtok(NULL, " ");
             dst_name = strtok(NULL, "\n");
-            printf("attempting to connect %s and %s..\n", src_name, dst_name);
+            printf("attempting to %s %s and %s..\n", action, src_name, dst_name);
 	    /* make port connection */
-            jack_connect(client, src_name, dst_name);
-
+	    if( !strcmp("connect",action) )
+	      jack_connect(client, src_name, dst_name);
+	    else if( !strcmp("disconnect",action) )
+	      jack_disconnect(client, src_name, dst_name);
+	    else {
+	      fprintf(stderr, "unknown command '%s'!\n", action);
+	      return 1;
+	    }
 	  }
         }
         printf("\nfinished!\n\n");

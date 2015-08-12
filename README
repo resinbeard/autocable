@@ -14,8 +14,8 @@ $ make
 OPERATION:
 Start jackd
 
-$ echo "system:capture_1 system:playback_1
-> system:capture_2 system:playback_2" | ./autocable
+$ echo "connect system:capture_1 system:playback_1
+> disconnect system:capture_2 system:playback_2" | ./autocable
 
 or
 
@@ -24,11 +24,11 @@ $ ./autocable yourdirectory/textfile.ac
 autocable will read any text file or piped input, however it
 must be formatted properly.
 
-In your file, use full port names and return each connection.
+In your file, use disconnect/connect, full port names, and return each connection.
 It does not matter if you return the last port connection.
 ie.     	
-	system:capture_1 system:playback_1
-    	system:capture_2 system:playback_2
+	connect system:capture_1 system:playback_1
+    	disconnect system:capture_2 system:playback_2
 
 An example file 'session.ac' is included with this program.
 
